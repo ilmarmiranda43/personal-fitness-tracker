@@ -1,0 +1,314 @@
+<!-- <!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/src/css/style.css">
+  <title>personal-fitness-tracker</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+
+</html> -->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Personal Fitness Tracker - track workouts, exercises, and progress." />
+  <title>Personal Fitness Tracker</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      background: #f5f7fa;
+      color: #1f2937;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 1.2rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      min-height: 470px;
+      display: flex;
+      align-items: center;
+      padding: 4rem 6%;
+      color: white;
+      background:
+        linear-gradient(rgba(17, 24, 39, 0.72), rgba(17, 24, 39, 0.72)),
+        url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      max-width: 560px;
+    }
+
+    .button {
+      display: inline-block;
+      background: #22c55e;
+      color: #0f172a;
+      padding: 0.85rem 1.3rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .section {
+      padding: 3.5rem 6%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      padding: 1.25rem;
+    }
+
+    .card h3 {
+      margin-bottom: 0.6rem;
+    }
+
+    .dashboard {
+      background: #e8f5ee;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    .stats {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .stat {
+      background: white;
+      padding: 1.3rem;
+      border-radius: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 0.25rem;
+    }
+
+    footer {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 800px) {
+      header {
+        justify-content: center;
+        text-align: center;
+      }
+
+      nav ul {
+        justify-content: center;
+      }
+
+      .cards,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 420px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">FitTrack</div>
+
+    <nav aria-label="Main navigation">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Exercises</a></li>
+        <li><a href="#">Workouts</a></li>
+        <li><a href="#">Progress</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Personal Fitness Tracker</h1>
+        <p>
+          Find exercises, build workouts, save your training sessions,
+          and follow your progress in one simple place.
+        </p>
+        <a class="button" href="#features">Explore Features</a>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <h2>Start Your Fitness Journey</h2>
+
+      <div class="cards">
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=900&q=80"
+            alt="Person running outdoors" />
+          <div class="card-content">
+            <h3>Find Exercises</h3>
+            <p>
+              Search for exercises and discover new ways to train different muscle groups.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=900&q=80"
+            alt="Person exercising in a gym" />
+          <div class="card-content">
+            <h3>Create Workouts</h3>
+            <p>
+              Build your own workout plans and save them for your next training session.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80"
+            alt="Fitness training session" />
+          <div class="card-content">
+            <h3>Track Progress</h3>
+            <p>
+              Keep your workout history organized and follow your fitness progress over time.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="dashboard">
+        <h2>Your Dashboard</h2>
+        <p>This area will show your fitness information as the project grows.</p>
+
+        <div class="stats">
+          <div class="stat">
+            <strong>0</strong>
+            Workouts
+          </div>
+
+          <div class="stat">
+            <strong>0</strong>
+            Favorites
+          </div>
+
+          <div class="stat">
+            <strong>0</strong>
+            Training Days
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Personal Fitness Tracker | WDD 330 Final Project</p>
+  </footer>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+
+</html>
