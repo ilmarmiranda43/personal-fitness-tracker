@@ -63,24 +63,35 @@ console.log("Personal Fitness Tracker loaded");
 const workoutForm = document.querySelector("#workoutForm");
 const formMessage = document.querySelector("#formMessage");
 
+function getWorkouts() {
+    return JSON.parse(localStorage.getItem("workouts")) || [];
+}
+
+function saveWorkouts(workouts) {
+    localStorage.setItem("workouts", JSON.stringify(workouts));
+}
+
 workoutForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const workoutName = document.querySelector("#workoutName").value;
-    const exerciseName = document.querySelector("#exerciseName").value;
-    const sets = document.querySelector("#sets").value;
-    const reps = document.querySelector("#reps").value;
-    const workoutDate = document.querySelector("#workoutDate").value;
+    const workout = {
+        id: Date.now(),
+        workoutName: document.querySelector("#workoutName").value,
+        exerciseName: document.querySelector("#exerciseName").value,
+        sets: Number(document.querySelector("#sets").value),
+        reps: Number(document.querySelector("#reps").value),
+        workoutDate: document.querySelector("#workoutDate").value,
+    };
 
-    console.log({
-        workoutName,
-        exerciseName,
-        sets,
-        reps,
-        workoutDate,
-    });
+    const workouts = getWorkouts();
 
-    formMessage.textContent = "Workout added successfully!";
+    workouts.push(workout);
+
+    saveWorkouts(workouts);
+
+    formMessage.textContent = "Workout saved successfully!";
 
     workoutForm.reset();
+
+    console.log("Saved workouts:", workouts);
 });
