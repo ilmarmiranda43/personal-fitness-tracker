@@ -1,5 +1,12 @@
 console.log("Personal Fitness Tracker loaded");
 
+import {
+    getWorkouts,
+    saveWorkouts,
+    getFavorites,
+    saveFavorites,
+} from "./storage.js";
+
 const workoutForm = document.querySelector("#workoutForm");
 const formMessage = document.querySelector("#formMessage");
 const workoutList = document.querySelector("#workoutList");
@@ -9,14 +16,6 @@ let editingWorkoutId = null;
 // =========================
 // WORKOUTS
 // =========================
-
-function getWorkouts() {
-    return JSON.parse(localStorage.getItem("workouts")) || [];
-}
-
-function saveWorkouts(workouts) {
-    localStorage.setItem("workouts", JSON.stringify(workouts));
-}
 
 function displayWorkouts() {
     const workouts = getWorkouts();
@@ -189,20 +188,6 @@ const favoriteButtons =
 const favoriteList =
     document.querySelector("#favoriteList");
 
-function getFavorites() {
-    return (
-        JSON.parse(
-            localStorage.getItem("favoriteExercises")
-        ) || []
-    );
-}
-
-function saveFavorites(favorites) {
-    localStorage.setItem(
-        "favoriteExercises",
-        JSON.stringify(favorites)
-    );
-}
 
 function displayFavorites() {
     const favorites = getFavorites();
