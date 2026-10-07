@@ -213,6 +213,49 @@
         min-height: 420px;
       }
     }
+
+    .workout-form {
+      max-width: 650px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus {
+      outline: 2px solid #22c55e;
+      border-color: #22c55e;
+    }
+
+    .workout-form button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .form-message {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -224,11 +267,49 @@
       <ul>
         <li><a href="#">Home</a></li>
         <li><a href="#">Exercises</a></li>
-        <li><a href="#">Workouts</a></li>
+        <li><a href="#workouts">Workouts</a></li>
         <li><a href="#">Progress</a></li>
       </ul>
     </nav>
   </header>
+
+  <section class="section" id="workouts">
+    <h2>Create Workout</h2>
+
+    <form id="workoutForm" class="workout-form">
+      <div class="form-group">
+        <label for="workoutName">Workout Name</label>
+        <input type="text" id="workoutName" name="workoutName" placeholder="Example: Monday Training" required />
+      </div>
+
+      <div class="form-group">
+        <label for="exerciseName">Exercise</label>
+        <input type="text" id="exerciseName" name="exerciseName" placeholder="Example: Push-ups" required />
+      </div>
+
+      <div class="form-group">
+        <label for="sets">Sets</label>
+        <input type="number" id="sets" name="sets" min="1" placeholder="3" required />
+      </div>
+
+      <div class="form-group">
+        <label for="reps">Repetitions</label>
+        <input type="number" id="reps" name="reps" min="1" placeholder="12" required />
+      </div>
+
+      <div class="form-group">
+        <label for="workoutDate">Workout Date</label>
+        <input type="date" id="workoutDate" name="workoutDate" required />
+      </div>
+
+      <button type="submit" class="button">
+        Add Workout
+      </button>
+    </form>
+
+    <p id="formMessage" class="form-message"></p>
+  </section>
+
 
   <main>
     <section class="hero">

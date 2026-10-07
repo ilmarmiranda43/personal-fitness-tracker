@@ -59,3 +59,28 @@
 
 // setupCounter(document.querySelector('#counter'))
 console.log("Personal Fitness Tracker loaded");
+
+const workoutForm = document.querySelector("#workoutForm");
+const formMessage = document.querySelector("#formMessage");
+
+workoutForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const workoutName = document.querySelector("#workoutName").value;
+    const exerciseName = document.querySelector("#exerciseName").value;
+    const sets = document.querySelector("#sets").value;
+    const reps = document.querySelector("#reps").value;
+    const workoutDate = document.querySelector("#workoutDate").value;
+
+    console.log({
+        workoutName,
+        exerciseName,
+        sets,
+        reps,
+        workoutDate,
+    });
+
+    formMessage.textContent = "Workout added successfully!";
+
+    workoutForm.reset();
+});
