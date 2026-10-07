@@ -283,3 +283,129 @@ if (favoriteList) {
 
     displayFavorites();
 }
+
+// =========================
+// OPEN FOOD FACTS API
+// =========================
+
+const barcodeInput =
+    document.querySelector("#barcodeInput");
+
+const searchFoodButton =
+    document.querySelector("#searchFoodButton");
+
+const foodResult =
+    document.querySelector("#foodResult");
+
+async function searchFoodByBarcode(barcode) {
+    foodResult.innerHTML = "<p>Loading product...</p>";
+
+    try {
+        const url =
+            `https://world.openfoodfacts.org/api/v2/product/${barcode}?fields=product_name,brands,image_front_url,nutrition_grades,nutriments`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("Could not load product.");
+        }
+
+        const data = await response.json();
+
+        if (data.status !== 1 || !data.product) {
+            foodResult.innerHTML =
+                "<p>Product not found.</p>";
+            return;
+        }
+
+        displayFood(data.product);
+    } catch (error) {
+        console.error(error);
+
+        foodResult.innerHTML =
+            "<p>There was an error loading the product.</p>";
+    }
+}
+
+function displayFood(product) {
+    const calories =
+        product.nutriments?.["energy-kcal_100g"] ?? "N/A";
+
+    const protein =
+        product.nutriments?.proteins_100g ?? "N/A";
+
+    const carbohydrates =
+        product.nutriments?.carbohydrates_100g ?? "N/A";
+
+    const fat =
+        product.nutriments?.fat_100g ?? "N/A";
+
+    foodResult.innerHTML = `
+    <article class="food-card">
+
+      ${product.image_front_url
+            ? `<img
+              src="${product.image_front_url}"
+              alt="${product.product_name || "Food product"}"
+            >`
+            : ""
+        }
+
+      <h3>
+        ${product.product_name || "Unknown Product"}
+      </h3>
+
+      <p>
+        <strong>Brand:</strong>
+        ${product.brands || "Unknown"}
+      </p>
+
+      <p>
+        <strong>Nutri-Score:</strong>
+        ${product.nutrition_grades
+            ? product.nutrition_grades.toUpperCase()
+            : "N/A"
+        }
+      </p>
+
+      <p>
+        <strong>Calories:</strong>
+        ${calories} kcal / 100g
+      </p>
+
+      <p>
+        <strong>Protein:</strong>
+        ${protein} g / 100g
+      </p>
+
+      <p>
+        <strong>Carbohydrates:</strong>
+        ${carbohydrates} g / 100g
+      </p>
+
+      <p>
+        <strong>Fat:</strong>
+        ${fat} g / 100g
+      </p>
+
+    </article>
+  `;
+}
+
+if (searchFoodButton) {
+    searchFoodButton.addEventListener(
+        "click",
+        () => {
+            const barcode =
+                barcodeInput.value.trim();
+
+            if (!barcode) {
+                foodResult.innerHTML =
+                    "<p>Please enter a barcode.</p>";
+                return;
+            }
+
+            searchFoodByBarcode(barcode);
+        }
+    );
+}
