@@ -62,6 +62,9 @@ console.log("Personal Fitness Tracker loaded");
 
 const workoutForm = document.querySelector("#workoutForm");
 const formMessage = document.querySelector("#formMessage");
+const workoutList = document.querySelector("#workoutList");
+
+let editingWorkoutId = null;
 
 function getWorkouts() {
     return JSON.parse(localStorage.getItem("workouts")) || [];
@@ -71,27 +74,158 @@ function saveWorkouts(workouts) {
     localStorage.setItem("workouts", JSON.stringify(workouts));
 }
 
+function displayWorkouts() {
+    const workouts = getWorkouts();
+
+    workoutList.innerHTML = "";
+
+    if (workouts.length === 0) {
+        workoutList.innerHTML = "<p>No workouts saved yet.</p>";
+        return;
+    }
+
+    workouts.forEach((workout) => {
+        const workoutItem = document.createElement("article");
+
+        workoutItem.classList.add("workout-item");
+
+        workoutItem.innerHTML = `
+      <h3>${workout.workoutName}</h3>
+
+      <div class="workout-details">
+        <p><strong>Exercise:</strong> ${workout.exerciseName}</p>
+        <p><strong>Sets:</strong> ${workout.sets}</p>
+        <p><strong>Reps:</strong> ${workout.reps}</p>
+        <p><strong>Date:</strong> ${workout.workoutDate}</p>
+      </div>
+
+      <div class="workout-actions">
+        <button
+          type="button"
+          class="edit-button"
+          data-id="${workout.id}"
+        >
+          Edit
+        </button>
+
+        <button
+          type="button"
+          class="delete-button"
+          data-id="${workout.id}"
+        >
+          Delete
+        </button>
+      </div>
+    `;
+
+        workoutList.appendChild(workoutItem);
+    });
+}
+
+function deleteWorkout(id) {
+    const workouts = getWorkouts();
+
+    const updatedWorkouts = workouts.filter(
+        (workout) => workout.id !== id
+    );
+
+    saveWorkouts(updatedWorkouts);
+    displayWorkouts();
+}
+
+function editWorkout(id) {
+    const workouts = getWorkouts();
+
+    const workout = workouts.find(
+        (item) => item.id === id
+    );
+
+    if (!workout) return;
+
+    document.querySelector("#workoutName").value =
+        workout.workoutName;
+
+    document.querySelector("#exerciseName").value =
+        workout.exerciseName;
+
+    document.querySelector("#sets").value =
+        workout.sets;
+
+    document.querySelector("#reps").value =
+        workout.reps;
+
+    document.querySelector("#workoutDate").value =
+        workout.workoutDate;
+
+    editingWorkoutId = id;
+
+    formMessage.textContent =
+        "Edit the workout and submit to save changes.";
+
+    workoutForm.scrollIntoView({
+        behavior: "smooth",
+    });
+}
+
 workoutForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const workout = {
-        id: Date.now(),
-        workoutName: document.querySelector("#workoutName").value,
-        exerciseName: document.querySelector("#exerciseName").value,
-        sets: Number(document.querySelector("#sets").value),
-        reps: Number(document.querySelector("#reps").value),
-        workoutDate: document.querySelector("#workoutDate").value,
+        id: editingWorkoutId || Date.now(),
+
+        workoutName:
+            document.querySelector("#workoutName").value,
+
+        exerciseName:
+            document.querySelector("#exerciseName").value,
+
+        sets:
+            Number(document.querySelector("#sets").value),
+
+        reps:
+            Number(document.querySelector("#reps").value),
+
+        workoutDate:
+            document.querySelector("#workoutDate").value,
     };
 
     const workouts = getWorkouts();
 
-    workouts.push(workout);
+    if (editingWorkoutId) {
+        const updatedWorkouts = workouts.map((item) =>
+            item.id === editingWorkoutId ? workout : item
+        );
 
-    saveWorkouts(workouts);
+        saveWorkouts(updatedWorkouts);
 
-    formMessage.textContent = "Workout saved successfully!";
+        formMessage.textContent =
+            "Workout updated successfully!";
+
+        editingWorkoutId = null;
+    } else {
+        workouts.push(workout);
+
+        saveWorkouts(workouts);
+
+        formMessage.textContent =
+            "Workout saved successfully!";
+    }
 
     workoutForm.reset();
 
-    console.log("Saved workouts:", workouts);
+    displayWorkouts();
 });
+
+workoutList.addEventListener("click", (event) => {
+    const id = Number(event.target.dataset.id);
+
+    if (event.target.classList.contains("delete-button")) {
+        deleteWorkout(id);
+    }
+
+    if (event.target.classList.contains("edit-button")) {
+        editWorkout(id);
+    }
+});
+
+displayWorkouts();
