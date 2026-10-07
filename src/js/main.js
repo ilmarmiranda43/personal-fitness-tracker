@@ -111,68 +111,73 @@ function editWorkout(id) {
     });
 }
 
-workoutForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+if (workoutForm) {
+    workoutForm.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-    const workout = {
-        id: editingWorkoutId || Date.now(),
+        const workout = {
+            id: editingWorkoutId || Date.now(),
 
-        workoutName:
-            document.querySelector("#workoutName").value,
+            workoutName:
+                document.querySelector("#workoutName").value,
 
-        exerciseName:
-            document.querySelector("#exerciseName").value,
+            exerciseName:
+                document.querySelector("#exerciseName").value,
 
-        sets:
-            Number(document.querySelector("#sets").value),
+            sets:
+                Number(document.querySelector("#sets").value),
 
-        reps:
-            Number(document.querySelector("#reps").value),
+            reps:
+                Number(document.querySelector("#reps").value),
 
-        workoutDate:
-            document.querySelector("#workoutDate").value,
-    };
+            workoutDate:
+                document.querySelector("#workoutDate").value,
+        };
 
-    const workouts = getWorkouts();
+        const workouts = getWorkouts();
 
-    if (editingWorkoutId) {
-        const updatedWorkouts = workouts.map((item) =>
-            item.id === editingWorkoutId ? workout : item
-        );
+        if (editingWorkoutId) {
+            const updatedWorkouts = workouts.map((item) =>
+                item.id === editingWorkoutId ? workout : item
+            );
 
-        saveWorkouts(updatedWorkouts);
+            saveWorkouts(updatedWorkouts);
 
-        formMessage.textContent =
-            "Workout updated successfully!";
+            formMessage.textContent =
+                "Workout updated successfully!";
 
-        editingWorkoutId = null;
-    } else {
-        workouts.push(workout);
+            editingWorkoutId = null;
+        } else {
+            workouts.push(workout);
 
-        saveWorkouts(workouts);
+            saveWorkouts(workouts);
 
-        formMessage.textContent =
-            "Workout saved successfully!";
-    }
+            formMessage.textContent =
+                "Workout saved successfully!";
+        }
 
-    workoutForm.reset();
+        workoutForm.reset();
+
+        displayWorkouts();
+    });
+}
+
+
+if (workoutList) {
+    workoutList.addEventListener("click", (event) => {
+        const id = Number(event.target.dataset.id);
+
+        if (event.target.classList.contains("delete-button")) {
+            deleteWorkout(id);
+        }
+
+        if (event.target.classList.contains("edit-button")) {
+            editWorkout(id);
+        }
+    });
 
     displayWorkouts();
-});
-
-workoutList.addEventListener("click", (event) => {
-    const id = Number(event.target.dataset.id);
-
-    if (event.target.classList.contains("delete-button")) {
-        deleteWorkout(id);
-    }
-
-    if (event.target.classList.contains("edit-button")) {
-        editWorkout(id);
-    }
-});
-
-displayWorkouts();
+}
 
 // =========================
 // FAVORITE EXERCISES
